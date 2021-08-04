@@ -159,19 +159,18 @@ public class MemberController {
 	      System.out.println(filename);
 	      member.setProfile_img(filename);
 	      
-	      // 암호 확인
-			System.out.println("첫번째:" + member.getPassword());
+
 			// 비밀번호 암호화 (sha256)
 			String encryPassword = UserSha256.encrypt(member.getPassword());
 			member.setPassword(encryPassword);
-			System.out.println("두번째:" + member.getPassword());
+
 
 
 	      memberService.regist(member);
 	      HttpSession session = request.getSession();
 	      session.setAttribute("member", member);
 	      
-	      return "member/login/loginform";
+	      return "redirect:/member/login/loginform";
 			
 	}
 

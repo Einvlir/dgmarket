@@ -183,6 +183,10 @@ hr {
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <!-- bootbox cdn -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.2/bootbox.min.js"></script>
+<!-- 커스텀 CSS -->
+<link rel="stylesheet" href="/resources/css/style.css">
+<!-- 폰트어썸 -->
+<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 <script>
 function myFunction() {
 	var input, filter, table, tr, td, i, txtValue;
@@ -289,10 +293,25 @@ function deleteReply(qna_id){
 	});
 }
 
+function loadNotice(){
+    $(".main_notice:hidden").slice(0, 10).show();
+    if($(".main_notice:hidden").length == 0){
+        $("#notice_bt").css("display", "none");
+    }
+}
+
+$(function(){
+	loadNotice();
+	
+});
 </script>
 </head>
 <body>
-<%@ include file="../inc/top_navi.jsp" %>
+	<%@ include file="../inc/top_navi.jsp" %>
+<!-- 케러셀 시작 -->
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="margin-top: 0px">
+		<%@include file="../inc/carousel.jsp" %>
+	</div>
 <div style="width: 80%; margin: auto;">
 <select name="" id="mySelect">
 	<option value="1" selected>내용</option>
@@ -313,7 +332,7 @@ function deleteReply(qna_id){
 	<% for(Qna qna : qnaList) {%> <!-- 꺼내온 게시글 만큼 돌리기 -->
 		<% String regdate = qna.getRegdate().substring(0, 10); %>		
 		<% if(qna.getDepth() == 0 ){ %> <!-- 원글이라면 -->
-			<tr style="background-color: #f2f2f2;">
+			<tr class="main_notice" style="background-color: #f2f2f2; display: none;">
 				<td><button id="<%= qna.getQna_id() %>" class="reply_bt" onclick="document.getElementById('id02').style.display='block'; changeQna_id(<%= qna.getQna_id() %>)">답변달기</button></td>
 			<% if(qna.getMember_id() == member.getMember_id()){ %> <!-- 내가 작성한 글이라면 -->
 				<td onclick="deleteQna(<%=qna.getQna_id()%>)"><%= qna.getContent() %></td>
@@ -351,7 +370,8 @@ function deleteReply(qna_id){
 	<% } %>
 	<tr>
 		<td colspan="6">
-			<button onclick="document.getElementById('id01').style.display='block'" style ="width: 10%">게시글 작성</button>
+			<button onclick="document.getElementById('id01').style.display='block'" style ="width: 10%; float: right;">게시글 작성</button>
+			<button onclick="loadNotice()" id="notice_bt" style ="width: 10%">더보기</button>
 		</td>
 	</tr>
 </table>
@@ -391,5 +411,8 @@ function deleteReply(qna_id){
 		</div>
 	</form>
 </div>
+	<!--  푸터 시작   -->
+	<%@include file="../inc/footer.jsp" %>
+	<!--  푸터 끝   -->
 </body>
 </html>
